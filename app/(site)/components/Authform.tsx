@@ -4,6 +4,7 @@ import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/Button';
 import React, { useCallback, useState } from 'react'
 import { BsGithub, BsGoogle } from "react-icons/bs"
+import { FcGoogle, } from "react-icons/fc"
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import AuthSocialButton from './AuthSocialButton';
 type Varient = 'LOGIN' | 'REGISTER'
@@ -96,7 +97,7 @@ export default function Authform() {
 
                         <AuthSocialButton onClick={() => socialaction('github')} icon={BsGithub}></AuthSocialButton>
 
-                        <AuthSocialButton onClick={() => socialaction('google')} icon={BsGoogle}></AuthSocialButton>
+                        <AuthSocialButton onClick={() => socialaction('google')} icon={FcGoogle}></AuthSocialButton>
 
                     </div>
 
