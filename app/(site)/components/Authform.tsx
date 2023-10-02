@@ -1,5 +1,5 @@
 'use client';
-
+import { toast } from 'react-hot-toast';
 import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/Button';
 import React, { useCallback, useState } from 'react'
@@ -7,6 +7,9 @@ import { BsGithub, BsGoogle } from "react-icons/bs"
 import { FcGoogle, } from "react-icons/fc"
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import AuthSocialButton from './AuthSocialButton';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
+import router from 'next/router';
 type Varient = 'LOGIN' | 'REGISTER'
 export default function Authform() {
     const [varient, setvarient] = useState<Varient>('LOGIN');
@@ -41,15 +44,49 @@ export default function Authform() {
         setisloading(true);
         if (varient === 'REGISTER') {
             //axios rregister
+            axios.post('/api/register', data)
+                .catch(() => toast.error("Something went wrong"))
+                .finally(() => setisloading(false))
+
         }
 
         if (varient === "LOGIN") {
             //axios login
+
+
+            signIn('credentials', {
+                ...data,
+                redirect: false
+            })
+                .then((callback) => {
+                    if (callback?.error) {
+                        toast.error('Invalid credentials!');
+                    }
+
+                    if (callback?.ok && !callback?.error) {
+                        // router.push('/conversations')
+                        toast.success("Logged in!")
+                    }
+                })
+                .finally(() => setisloading(false))
         }
     }
 
     const socialaction = (action: string) => {
         setisloading(true);
+
+        signIn(action, { redirect: false })
+            .then((callback) => {
+                if (callback?.error) {
+                    toast.error('Invalid credentials!');
+                }
+
+                if (callback?.ok && !callback?.error) {
+                    // router.push('/conversations')
+                    toast.success("Logged in!")
+                }
+            })
+            .finally(() => setisloading(false));
 
         //next auth social sign in
     }
@@ -61,12 +98,12 @@ export default function Authform() {
                 <form action="" className='space-y-6' onSubmit={handleSubmit(onsubmit)}>
 
                     {varient === "REGISTER" && (
-                        <Input id='email' lable='Email' register={register} errors={errors}></Input>
+                        <Input disabled={isloading} id='name' lable='Name' register={register} errors={errors}></Input>
 
                     )}
 
-                    <Input id='email' type='email' lable='Email address' register={register} errors={errors}></Input>
-                    <Input id='password' type='password' lable='Password' register={register} errors={errors}></Input>
+                    <Input disabled={isloading} id='email' type='email' lable='Email address' register={register} errors={errors}></Input>
+                    <Input disabled={isloading} id='password' type='password' lable='Password' register={register} errors={errors}></Input>
 
 
                     <div>

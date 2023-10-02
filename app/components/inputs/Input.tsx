@@ -3,26 +3,26 @@ import clsx from 'clsx'
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
 
-interface Inputprops{
-  lable:string;
-  id:string;
-  type?:string;
-  required?:boolean;
+interface Inputprops {
+  lable: string;
+  id: string;
+  type?: string;
+  required?: boolean;
   register: UseFormRegister<FieldValues>,
-  errors:FieldErrors,
-  disabled?:boolean
+  errors: FieldErrors,
+  disabled?: boolean
 }
 
 
-const Input:React.FC<Inputprops>=({
-  lable,id,type,register,required,errors,disabled
-})=> {
+const Input: React.FC<Inputprops> = ({
+  lable, id, type, register, required, errors, disabled
+}) => {
   return (
     <div>
       <label htmlFor={id} className='block text-sm font-medium leading-6 text-gray-800'>{lable}</label>
 
       <div className='mt-2'>
-<input className={clsx(`
+        <input className={clsx(`
 
 form-input 
 block
@@ -43,10 +43,10 @@ block
       sm:leading-6
 
 `,
-errors[id] && "focus:ring-rose-600",
-disabled && "opacity-50 cursor-default"
+          errors[id] && "focus:ring-rose-600",
+          disabled && "opacity-50 cursor-default"
 
-)}  id={id} type={type} autoComplete={id} disabled={disabled} {...register(id,{required})}/>
+        )} id={id} type={type} autoComplete={id} disabled={disabled} {...register(id, { required })} />
 
 
       </div>
